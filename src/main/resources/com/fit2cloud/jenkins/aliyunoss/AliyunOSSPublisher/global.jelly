@@ -1,0 +1,16 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+  <f:section title="阿里云OSS帐号设置">
+      <f:entry title="阿里云Access Key" field="aliyunAccessKey" help="/plugin/aliyun-oss/help-aliyunAccessKey.html">
+        <f:textbox/>
+      </f:entry>
+      <f:entry title="阿里云Secret Key" field="aliyunSecretKey" help="/plugin/aliyun-oss/help-aliyunSecretKey.html">
+        <f:password/>
+      </f:entry>
+		<f:validateButton
+			title="验证账户" progress="验证中..."
+			method="checkAccount" with="aliyunAccessKey,aliyunSecretKey" />
+  </f:section>
+  
+</j:jelly>

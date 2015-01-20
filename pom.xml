@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>aliyun-oss</artifactId>
+	<parent>
+		<groupId>org.jenkins-ci.plugins</groupId>
+		<artifactId>plugin</artifactId>
+		<version>1.593</version>
+	</parent>
+	<version>0.5</version>
+	<packaging>hpi</packaging>
+	<name>Aliyun OSS Plugin for Jenkins</name>
+	<description>Uploads build artifacts or downloads build dependencies using aliyun oss storage</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0 (the "License")</name>
+			<comments>Licensed under the Apache License, Version 2.0 (the "License").</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>zhimin</id>
+			<name>Zhimin Ruan</name>
+			<email>zhimin@fit2cloud.com</email>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.3</version>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>fit2cloud</id>
+			<url>http://repository.fit2cloud.com/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>repo.jenkins-ci.org</id>
+			<url>http://repo.jenkins-ci.org/public/</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>fit2cloud</id>
+			<url>http://repository.fit2cloud.com/content/groups/public/</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>repo.jenkins-ci.org</id>
+			<url>http://repo.jenkins-ci.org/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5</version>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<distributionManagement>
+		<repository>
+			<id>fit2cloud-example</id>
+			<name>Fit2Cloud Example Release</name>
+			<url>http://repository-proxy.fit2cloud.com:8080/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>fit2cloud-example</id>
+			<url>http://repository-proxy.fit2cloud.com:8080/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+</project>
