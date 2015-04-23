@@ -14,13 +14,12 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.ObjectMetadata;
 
 public class AliyunOSSClient {
-	private static final String endpoint = "http://oss.aliyuncs.com";
 	private static final String fpSeparator = ";";
 
 	public static boolean validateAliyunAccount(
 			final String aliyunAccessKey, final String aliyunSecretKey) throws AliyunOSSException {
 		try {
-			OSSClient client = new OSSClient(endpoint, aliyunAccessKey, aliyunSecretKey);
+			OSSClient client = new OSSClient(aliyunAccessKey, aliyunSecretKey);
 			client.listBuckets();
 		} catch (Exception e) {
 			throw new AliyunOSSException("阿里云账号验证失败：" + e.getMessage());
@@ -32,7 +31,7 @@ public class AliyunOSSClient {
 	public static boolean validateOSSBucket(String aliyunAccessKey,
 			String aliyunSecretKey, String bucketName) throws AliyunOSSException{
 		try {
-			OSSClient client = new OSSClient(endpoint, aliyunAccessKey, aliyunSecretKey);
+			OSSClient client = new OSSClient(aliyunAccessKey, aliyunSecretKey);
 			client.getBucketLocation(bucketName);
 		} catch (Exception e) {
 			throw new AliyunOSSException("验证Bucket名称失败：" + e.getMessage());
@@ -42,7 +41,10 @@ public class AliyunOSSClient {
 	
 	public static int upload(AbstractBuild<?, ?> build, BuildListener listener,
 			final String aliyunAccessKey, final String aliyunSecretKey, String bucketName,String expFP,String expVP) throws AliyunOSSException {
-		OSSClient client = new OSSClient(endpoint, aliyunAccessKey, aliyunSecretKey);
+		OSSClient client = new OSSClient(aliyunAccessKey, aliyunSecretKey);
+		String location = client.getBucketLocation(bucketName);
+		String endpoint = "http://"+location+".aliyuncs.com";
+		client = new OSSClient(endpoint, aliyunAccessKey, aliyunSecretKey);
 		int filesUploaded = 0; // Counter to track no. of files that are uploaded
 		try {
 			FilePath workspacePath = build.getWorkspace();
@@ -54,6 +56,7 @@ public class AliyunOSSClient {
 			FilePath[] paths = null;
 
 			listener.getLogger().println("开始上传到阿里云OSS...");
+			listener.getLogger().println("上传endpoint是：" + endpoint);
 
 			while (strTokens.hasMoreElements()) {
 				String fileName = strTokens.nextToken();
