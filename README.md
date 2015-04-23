@@ -26,14 +26,14 @@ Jenkins是当前最常用的CI服务器，FIT2CLOUD Aliyun-OSS-Plugin for Jenkin
 
 在Jenkins Job的Post-build actions，用户可以设上传Artifact到阿里云OSS。需要填写的信息是：
 
-1. Bucket名称： 填写artifact要存放的bucket
-2. 要上传的artifacts：填写artifact文件，文件之间用;隔开。另外，也支持通配符描述，比如 text/*.zip指text目录下面的所有zip文件
-3. Object前缀设置：可以设置object key的前缀，支出使用Jenkins环境变量比如: "${JOB_NAME}/${BUILD_ID}/${BUILD_NUMBER}/"
+1. Bucket名称: artifact要存放的bucket
+2. 要上传的artifacts: 文件之间用;隔开。支持通配符描述，比如 text/*.zip
+3. Object前缀设置：可以设置object key的前缀，支持Jenkins环境变量比如: "${JOB_NAME}/${BUILD_ID}/${BUILD_NUMBER}/"
 
 假设一个job的名称是test，用户的设置如下
 
 1. bucketName: f2c
-2. 要上传的artifacts：hello.txt;hello1.txt
+2. 要上传的artifacts: hello.txt;hello1.txt
 3. Object前缀: ${JOB_NAME}/${BUILD_ID}/${BUILD_NUMBER}
 
 那么上传后的文件url为: http://f2c.oss-cn-hangzhou.aliyuncs.com/test/2015-01-20_14-22-46/5/hello.txt
