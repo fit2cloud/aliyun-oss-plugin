@@ -11,14 +11,16 @@ Jenkins是当前最常用的CI服务器，FIT2CLOUD Aliyun-OSS-Plugin for Jenkin
 一、安装说明
 -------------------------
 
-插件下载地址：http://repository-proxy.fit2cloud.com:8080/content/repositories/releases/org/jenkins-ci/plugins/aliyun-oss/0.5/aliyun-oss-0.5.hpi
+插件下载地址：http://repository-proxy.fit2cloud.com:8080/content/repositories/releases/org/jenkins-ci/plugins/aliyun-oss/0.6/aliyun-oss-0.6.hpi
 在Jenkins中安装插件, 请到 Manage Jenkins | Advanced | Upload，上传插件(.hpi文件)
 安装完毕后请重新启动Jenkins
 
 二、配置说明
 -------------------------
 
-在使用插件之前，必须先在[Manage Jenkins | Configure System | 阿里云OSS账户设置]中配置阿里云帐号的Access Key和Secret Key.
+在使用插件之前，必须先在[Manage Jenkins | Configure System | 阿里云OSS账户设置]中配置阿里云帐号的Access Key、Secret Key和阿里云EndPoint后缀.
+
+阿里云后缀：内网填"-internal.aliyuncs.com",外网填".aliyuncs.com",默认外网。如果您的Jenkins也部署在阿里云上面，那么可以使用内网，上传速度更快。
 
 
 三、Post-build actions: 上传Artifact到阿里云OSS
