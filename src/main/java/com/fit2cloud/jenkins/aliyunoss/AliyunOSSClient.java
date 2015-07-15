@@ -40,10 +40,10 @@ public class AliyunOSSClient {
 	}
 	
 	public static int upload(AbstractBuild<?, ?> build, BuildListener listener,
-			final String aliyunAccessKey, final String aliyunSecretKey, String bucketName,String expFP,String expVP) throws AliyunOSSException {
+			final String aliyunAccessKey, final String aliyunSecretKey, final String aliyunEndPointSuffix, String bucketName,String expFP,String expVP) throws AliyunOSSException {
 		OSSClient client = new OSSClient(aliyunAccessKey, aliyunSecretKey);
 		String location = client.getBucketLocation(bucketName);
-		String endpoint = "http://"+location+".aliyuncs.com";
+		String endpoint = "http://" + location + aliyunEndPointSuffix;
 		client = new OSSClient(endpoint, aliyunAccessKey, aliyunSecretKey);
 		int filesUploaded = 0; // Counter to track no. of files that are uploaded
 		try {

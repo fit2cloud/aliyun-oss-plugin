@@ -77,6 +77,7 @@ public class AliyunOSSPublisher extends Publisher {
 
 		private String aliyunAccessKey;
 		private String aliyunSecretKey;
+		private String aliyunEndPointSuffix;
 
 		public DescriptorImpl() {
 			super(AliyunOSSPublisher.class);
@@ -102,20 +103,25 @@ public class AliyunOSSPublisher extends Publisher {
 		public boolean configure(StaplerRequest req, JSONObject formData)
 				throws FormException {
 			req.bindParameters(this);
-			this.aliyunAccessKey = formData.getString("aliyunAccessKey");
-			this.aliyunSecretKey = formData.getString("aliyunSecretKey");
+			this.aliyunAccessKey        = formData.getString("aliyunAccessKey");
+			this.aliyunSecretKey        = formData.getString("aliyunSecretKey");
+			this.aliyunEndPointSuffix   = formData.getString("aliyunEndPointSuffix");
 			save();
 			return super.configure(req, formData);
 		}
 
 		public FormValidation doCheckAccount(
 				@QueryParameter String aliyunAccessKey,
-				@QueryParameter String aliyunSecretKey) {
+				@QueryParameter String aliyunSecretKey,
+				@QueryParameter String aliyunEndPointSuffix) {
 			if (Utils.isNullOrEmpty(aliyunAccessKey)) {
 				return FormValidation.error("阿里云AccessKey不能为空！");
 			}
 			if (Utils.isNullOrEmpty(aliyunSecretKey)) {
 				return FormValidation.error("阿里云SecretKey不能为空！");
+			}
+			if (Utils.isNullOrEmpty(aliyunEndPointSuffix)) {
+				return FormValidation.error("阿里云EndPointSuffix不能为空！");
 			}
 			try {
 				AliyunOSSClient.validateAliyunAccount(aliyunAccessKey,
@@ -192,8 +198,11 @@ public class AliyunOSSPublisher extends Publisher {
 		
 		boolean success = false;
 		try {
-			int filesUploaded = AliyunOSSClient.upload(build, listener, this.getDescriptor().aliyunAccessKey,
-					 this.getDescriptor().aliyunSecretKey, bucketName, expFP, expVP);
+			int filesUploaded = AliyunOSSClient.upload(build, listener,
+                    this.getDescriptor().aliyunAccessKey,
+					this.getDescriptor().aliyunSecretKey,
+                    this.getDescriptor().aliyunEndPointSuffix,
+                    bucketName, expFP, expVP);
 			if (filesUploaded > 0) { 
 				listener.getLogger().println("上传Artifacts到阿里云OSS成功，上传文件个数:" + filesUploaded);
 				success = true;
