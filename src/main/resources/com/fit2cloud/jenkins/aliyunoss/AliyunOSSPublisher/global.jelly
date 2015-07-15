@@ -8,9 +8,12 @@
       <f:entry title="阿里云Secret Key" field="aliyunSecretKey" help="/plugin/aliyun-oss/help-aliyunSecretKey.html">
         <f:password/>
       </f:entry>
+      <f:entry title="阿里云EndPoint后缀" field="aliyunEndPointSuffix" help="/plugin/aliyun-oss/help-aliyunEndPoint.html">
+        <f:textbox default=".aliyuncs.com" />
+      </f:entry>
 		<f:validateButton
 			title="验证账户" progress="验证中..."
-			method="checkAccount" with="aliyunAccessKey,aliyunSecretKey" />
+			method="checkAccount" with="aliyunAccessKey,aliyunSecretKey,aliyunEndPointSuffix" />
   </f:section>
   
 </j:jelly>
