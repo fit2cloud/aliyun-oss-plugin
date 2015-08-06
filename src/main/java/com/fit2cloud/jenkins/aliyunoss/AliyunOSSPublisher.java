@@ -168,6 +168,14 @@ public class AliyunOSSPublisher extends Publisher {
 		public void setAliyunSecretKey(String aliyunSecretKey) {
 			this.aliyunSecretKey = aliyunSecretKey;
 		}
+
+		public String getAliyunEndPointSuffix() {
+			return aliyunEndPointSuffix;
+		}
+
+		public void setAliyunEndPointSuffix(String aliyunEndPointSuffix) {
+			this.aliyunEndPointSuffix = aliyunEndPointSuffix;
+		}
 	}
 
 	@Override
