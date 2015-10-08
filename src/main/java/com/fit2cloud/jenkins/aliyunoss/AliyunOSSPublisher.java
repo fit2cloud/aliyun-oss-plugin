@@ -96,7 +96,7 @@ public class AliyunOSSPublisher extends Publisher {
 		}
 
 		public String getDisplayName() {
-			return "上传Aartifacts到阿里云OSS";
+			return "上传Artifacts到阿里云OSS";
 		}
 
 		@Override
