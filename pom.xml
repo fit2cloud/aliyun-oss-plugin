@@ -47,20 +47,12 @@
 
 	<repositories>
 		<repository>
-			<id>fit2cloud</id>
-			<url>http://repository.fit2cloud.com/content/groups/public/</url>
-		</repository>
-		<repository>
 			<id>repo.jenkins-ci.org</id>
 			<url>http://repo.jenkins-ci.org/public/</url>
 		</repository>
 	</repositories>
 
 	<pluginRepositories>
-		<pluginRepository>
-			<id>fit2cloud</id>
-			<url>http://repository.fit2cloud.com/content/groups/public/</url>
-		</pluginRepository>
 		<pluginRepository>
 			<id>repo.jenkins-ci.org</id>
 			<url>http://repo.jenkins-ci.org/public/</url>
