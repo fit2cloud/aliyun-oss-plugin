@@ -1,17 +1,17 @@
 package com.fit2cloud.jenkins.aliyunoss;
 
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.ObjectMetadata;
 import hudson.FilePath;
-import hudson.model.BuildListener;
 import hudson.model.AbstractBuild;
+import hudson.model.BuildListener;
+import org.apache.commons.lang.time.DurationFormatUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.FileNameMap;
+import java.net.URLConnection;
 import java.util.StringTokenizer;
-
-import org.apache.commons.lang.time.DurationFormatUtils;
-
-import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.ObjectMetadata;
 
 public class AliyunOSSClient {
 	private static final String fpSeparator = ";";
@@ -112,6 +112,8 @@ public class AliyunOSSClient {
 						try {
 							ObjectMetadata meta = new ObjectMetadata();
 							meta.setContentLength(src.length());
+							meta.setContentType(getContentType(src));
+							listener.getLogger().println("File: " + src.getName() + ", Content Type: " + meta.getContentType());
 							client.putObject(bucketName, key, inputStream, meta);
 						} finally {
 							try {
@@ -134,6 +136,39 @@ public class AliyunOSSClient {
 	
 	public static String getTime(long timeInMills) {
 		return DurationFormatUtils.formatDuration(timeInMills, "HH:mm:ss.S") + " (HH:mm:ss.S)";
+	}
+
+
+	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types
+	// support the common web file types for now
+	private static final String[] COMMON_CONTENT_TYPES = {
+		".js", 		"application/js",
+		".json", 	"application/json",
+		".svg", 	"image/svg+xml",
+		".woff", 	"application/x-font-woff",
+		".woff2", 	"application/x-font-woff",
+		".ttf", 	"application/x-font-ttf"
+	};
+
+	// http://www.rgagnon.com/javadetails/java-0487.html
+	// we don't use the more robust solutions (checking magic headers) here, because the file stream might be
+	// loaded remotely, so that would be time consuming in checking, even hangs the Jenkins build in my test.
+	private static String getContentType(FilePath filePath) {
+		FileNameMap fileNameMap = URLConnection.getFileNameMap();
+		String fileName = filePath.getName();
+		String type = fileNameMap.getContentTypeFor(fileName);
+
+		if (type == null) {
+			for (int i = 0; i < COMMON_CONTENT_TYPES.length; i += 2) {
+				String extension = COMMON_CONTENT_TYPES[i];
+				int beginIndex = Math.max(0, fileName.length() - extension.length());
+				if (fileName.substring(beginIndex).equals(extension)) {
+					return COMMON_CONTENT_TYPES[i + 1];
+				}
+			}
+			type = "application/octet-stream";
+		}
+		return type;
 	}
 
 }
