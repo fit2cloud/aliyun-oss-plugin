@@ -29,7 +29,7 @@ public class AliyunOSSClient {
 
 
 	public static boolean validateOSSBucket(String aliyunAccessKey,
-			String aliyunSecretKey, String bucketName) throws AliyunOSSException{
+											String aliyunSecretKey, String bucketName) throws AliyunOSSException{
 		try {
 			OSSClient client = new OSSClient(aliyunAccessKey, aliyunSecretKey);
 			client.getBucketLocation(bucketName);
@@ -38,9 +38,9 @@ public class AliyunOSSClient {
 		}
 		return true;
 	}
-	
+
 	public static int upload(AbstractBuild<?, ?> build, BuildListener listener,
-			final String aliyunAccessKey, final String aliyunSecretKey, final String aliyunEndPointSuffix, String bucketName,String expFP,String expVP) throws AliyunOSSException {
+							 final String aliyunAccessKey, final String aliyunSecretKey, final String aliyunEndPointSuffix, String bucketName,String expFP,String expVP) throws AliyunOSSException {
 		OSSClient client = new OSSClient(aliyunAccessKey, aliyunSecretKey);
 		String location = client.getBucketLocation(bucketName);
 		String endpoint = "http://" + location + aliyunEndPointSuffix;
@@ -123,8 +123,11 @@ public class AliyunOSSClient {
 						}
 						long endTime = System.currentTimeMillis();
 						listener.getLogger().println("Uploaded object ["+ key + "] in " + getTime(endTime - startTime));
+						listener.getLogger().println("版本下载地址:"+"http://"+bucketName+"."+location+aliyunEndPointSuffix+"/"+key);
 						filesUploaded++;
 					}
+				}else {
+					listener.getLogger().println(expFP+"下未找到Artifacts，请确认\"要上传的Artifacts\"中路径配置正确或部署包已正常生成，如pom.xml里assembly插件及配置正确。");
 				}
 			}
 		} catch (Exception e) {
@@ -142,12 +145,12 @@ public class AliyunOSSClient {
 	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types
 	// support the common web file types for now
 	private static final String[] COMMON_CONTENT_TYPES = {
-		".js", 		"application/js",
-		".json", 	"application/json",
-		".svg", 	"image/svg+xml",
-		".woff", 	"application/x-font-woff",
-		".woff2", 	"application/x-font-woff",
-		".ttf", 	"application/x-font-ttf"
+			".js", 		"application/js",
+			".json", 	"application/json",
+			".svg", 	"image/svg+xml",
+			".woff", 	"application/x-font-woff",
+			".woff2", 	"application/x-font-woff",
+			".ttf", 	"application/x-font-ttf"
 	};
 
 	// http://www.rgagnon.com/javadetails/java-0487.html
