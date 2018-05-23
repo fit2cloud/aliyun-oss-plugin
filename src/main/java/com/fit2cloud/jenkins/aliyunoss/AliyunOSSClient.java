@@ -5,6 +5,8 @@ import com.aliyun.oss.model.ObjectMetadata;
 import hudson.FilePath;
 import hudson.model.AbstractBuild;
 import hudson.model.BuildListener;
+import hudson.model.Run;
+import hudson.model.TaskListener;
 import org.apache.commons.lang.time.DurationFormatUtils;
 
 import java.io.IOException;
@@ -39,15 +41,17 @@ public class AliyunOSSClient {
 		return true;
 	}
 
-	public static int upload(AbstractBuild<?, ?> build, BuildListener listener,
-							 final String aliyunAccessKey, final String aliyunSecretKey, final String aliyunEndPointSuffix, String bucketName,String expFP,String expVP) throws AliyunOSSException {
+	public static int upload(Run<?, ?> build, TaskListener listener,
+							 final String aliyunAccessKey, final String aliyunSecretKey, final String aliyunEndPointSuffix, String bucketName, String expFP, String expVP) throws AliyunOSSException {
 		OSSClient client = new OSSClient(aliyunAccessKey, aliyunSecretKey);
 		String location = client.getBucketLocation(bucketName);
 		String endpoint = "http://" + location + aliyunEndPointSuffix;
 		client = new OSSClient(endpoint, aliyunAccessKey, aliyunSecretKey);
 		int filesUploaded = 0; // Counter to track no. of files that are uploaded
 		try {
-			FilePath workspacePath = build.getWorkspace();
+			AbstractBuild build1 = (AbstractBuild) build;
+			FilePath workspacePath = build1.getWorkspace();
+
 			if (workspacePath == null) {
 				listener.getLogger().println("工作空间中没有任何文件.");
 				return filesUploaded;

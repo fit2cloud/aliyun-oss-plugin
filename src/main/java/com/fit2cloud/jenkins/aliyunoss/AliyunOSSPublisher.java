@@ -1,21 +1,22 @@
 package com.fit2cloud.jenkins.aliyunoss;
 
 import hudson.Extension;
+import hudson.FilePath;
 import hudson.Launcher;
-import hudson.model.BuildListener;
-import hudson.model.Result;
-import hudson.model.AbstractBuild;
-import hudson.model.AbstractProject;
+import hudson.model.*;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.BuildStepMonitor;
+import hudson.tasks.Builder;
 import hudson.tasks.Publisher;
 import hudson.util.FormValidation;
 
 import java.io.IOException;
 import java.io.PrintStream;
 
+import javax.annotation.Nonnull;
 import javax.servlet.ServletException;
 
+import jenkins.tasks.SimpleBuildStep;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
@@ -24,7 +25,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
-public class AliyunOSSPublisher extends Publisher {
+public class AliyunOSSPublisher extends Builder implements SimpleBuildStep {
 
 	private PrintStream logger;
 	String bucketName;
@@ -71,10 +72,13 @@ public class AliyunOSSPublisher extends Publisher {
 
 		return (DescriptorImpl) super.getDescriptor();
 	}
+
+
+
 	@Symbol("oss")
 	@Extension
 	public static final class DescriptorImpl extends
-			BuildStepDescriptor<Publisher> {
+			BuildStepDescriptor<Builder> {
 
 		private String aliyunAccessKey;
 		private String aliyunSecretKey;
@@ -85,12 +89,7 @@ public class AliyunOSSPublisher extends Publisher {
 			load();
 		}
 
-		@Override
-		public Publisher newInstance(StaplerRequest req, JSONObject formData)
-				throws FormException {
-			return super.newInstance(req, formData);
-		}
-		
+
 		@Override
 		public boolean isApplicable(Class<? extends AbstractProject> aClass) {
 			return true;
@@ -153,7 +152,7 @@ public class AliyunOSSPublisher extends Publisher {
 			}
 			return FormValidation.ok();
 		}
-		
+
 		public String getAliyunAccessKey() {
 			return aliyunAccessKey;
 		}
@@ -179,40 +178,40 @@ public class AliyunOSSPublisher extends Publisher {
 		}
 	}
 
+
 	@Override
-	public boolean perform(AbstractBuild build, Launcher launcher,BuildListener listener) 
-			throws InterruptedException, IOException {
+	public void perform(@Nonnull Run<?, ?> run, @Nonnull FilePath filePath, @Nonnull Launcher launcher, @Nonnull TaskListener listener) throws InterruptedException, IOException {
+		//TODO
 		this.logger = listener.getLogger();
-		final boolean buildFailed = build.getResult() == Result.FAILURE;
+		final boolean buildFailed = run.getResult() == Result.FAILURE;
 		if (buildFailed) {
 			logger.println("Job构建失败,无需上传Aritfacts到阿里云OSS.");
-			return true;
 		}
-		
+
 		// Resolve file path
-		String expFP = Utils.replaceTokens(build, listener, filesPath);
+		String expFP = Utils.replaceTokens(run, listener, filesPath);
 
 		if (expFP != null) {
 			expFP = expFP.trim();
 		}
 
 		// Resolve virtual path
-		String expVP = Utils.replaceTokens(build, listener, objectPrefix);
+		String expVP = Utils.replaceTokens(run, listener, objectPrefix);
 		if (Utils.isNullOrEmpty(expVP)) {
 			expVP = null;
 		}
 		if (!Utils.isNullOrEmpty(expVP) && !expVP.endsWith(Utils.FWD_SLASH)) {
 			expVP = expVP.trim() + Utils.FWD_SLASH;
-		}        
-		
+		}
+
 		boolean success = false;
 		try {
-			int filesUploaded = AliyunOSSClient.upload(build, listener,
-                    this.getDescriptor().aliyunAccessKey,
+			int filesUploaded = AliyunOSSClient.upload(run, listener,
+					this.getDescriptor().aliyunAccessKey,
 					this.getDescriptor().aliyunSecretKey,
-                    this.getDescriptor().aliyunEndPointSuffix,
-                    bucketName, expFP, expVP);
-			if (filesUploaded > 0) { 
+					this.getDescriptor().aliyunEndPointSuffix,
+					bucketName, expFP, expVP);
+			if (filesUploaded > 0) {
 				listener.getLogger().println("上传Artifacts到阿里云OSS成功，上传文件个数:" + filesUploaded);
 				success = true;
 			}
@@ -223,7 +222,6 @@ public class AliyunOSSPublisher extends Publisher {
 			e.printStackTrace(this.logger);
 			success = false;
 		}
-		return success;
 	}
 
 }
