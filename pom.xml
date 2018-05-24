@@ -48,8 +48,6 @@
 			<artifactId>structs</artifactId>
 			<version>1.14</version>
 		</dependency>
-
-
 	</dependencies>
 
 	<repositories>
