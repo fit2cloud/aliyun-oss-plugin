@@ -71,14 +71,10 @@
 	
 	<distributionManagement>
 		<repository>
-			<id>fit2cloud-example</id>
-			<name>Fit2Cloud Example Release</name>
-			<url>http://repository-proxy.fit2cloud.com:8080/content/repositories/releases/</url>
+			<id>fit2cloud-public</id>
+			<name>Fit2Cloud Public Release</name>
+			<url>http://repository.fit2cloud.com/content/repositories/fit2cloud-public/</url>
 		</repository>
-		<snapshotRepository>
-			<id>fit2cloud-example</id>
-			<url>http://repository-proxy.fit2cloud.com:8080/content/repositories/snapshots/</url>
-		</snapshotRepository>
 	</distributionManagement>
 	
 </project>
