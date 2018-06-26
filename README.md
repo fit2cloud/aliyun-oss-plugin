@@ -1,5 +1,19 @@
 FIT2CLOUD Aliyun-OSS-Plugin for Jenkins
 ====================
+在支持fork前版本功能的基础上,增加了pipline的配置
+
+    stage('Upload') {
+            steps {
+                echo 'Uploading'
+                oss bucketName: 'jar-backup', filesPath: 'web/target/*.jar', objectPrefix: '${JOB_NAME}'
+            }
+        }
+参考文档:https://jenkins.io/doc/developer/plugin-development/pipeline-integration/
+
+----------
+以下为原始文档
+----------
+
 建立统一的artifacts仓库是后续的持续部署的前提。目前，建立artifacts仓库大致有如下三种选择：
 
 1. FTP服务器：很多用户仍然在用这种方式存储Artifact
@@ -50,4 +64,3 @@ Jenkins是当前最常用的CI服务器，FIT2CLOUD Aliyun-OSS-Plugin for Jenkin
 4. mvn jdi:run 进行本地调试
 5. mvn package 打包生成hpi文件
 
-如果有问题，请联系zhimin@fit2cloud.com

@@ -6,6 +6,8 @@ import java.util.Map;
 import hudson.Util;
 import hudson.model.BuildListener;
 import hudson.model.AbstractBuild;
+import hudson.model.Run;
+import hudson.model.TaskListener;
 
 
 public class Utils {
@@ -19,8 +21,8 @@ public class Utils {
 		return isValid;
 	}
 	
-	public static String replaceTokens(AbstractBuild<?, ?> build,
-			BuildListener listener, String text) throws IOException,
+	public static String replaceTokens(Run<?, ?> build,
+									   TaskListener listener, String text) throws IOException,
 			InterruptedException {
 		String newText = null;
 		if (!isNullOrEmpty(text)) {
