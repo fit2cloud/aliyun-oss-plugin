@@ -151,7 +151,7 @@ public class AliyunOSSClient {
 			".woff", 	"application/x-font-woff",
 			".woff2", 	"application/x-font-woff",
 			".ttf", 	"application/x-font-ttf",
-			".css", 	"text/css",
+			".css", 	"text/css"
 	};
 
 	// http://www.rgagnon.com/javadetails/java-0487.html
@@ -165,8 +165,7 @@ public class AliyunOSSClient {
 		if (type == null) {
 			for (int i = 0; i < COMMON_CONTENT_TYPES.length; i += 2) {
 				String extension = COMMON_CONTENT_TYPES[i];
-				int beginIndex = Math.max(0, fileName.length() - extension.length());
-				if (fileName.substring(beginIndex).equals(extension)) {
+				if (fileName.toLowerCase().endsWith(extension)) {
 					return COMMON_CONTENT_TYPES[i + 1];
 				}
 			}
