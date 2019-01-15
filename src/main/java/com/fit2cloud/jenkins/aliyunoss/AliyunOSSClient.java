@@ -150,7 +150,8 @@ public class AliyunOSSClient {
 			".svg", 	"image/svg+xml",
 			".woff", 	"application/x-font-woff",
 			".woff2", 	"application/x-font-woff",
-			".ttf", 	"application/x-font-ttf"
+			".ttf", 	"application/x-font-ttf",
+			".css",     "text/css"
 	};
 
 	// http://www.rgagnon.com/javadetails/java-0487.html
