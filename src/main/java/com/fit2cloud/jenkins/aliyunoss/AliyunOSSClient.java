@@ -145,7 +145,7 @@ public class AliyunOSSClient {
 	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types
 	// support the common web file types for now
 	private static final String[] COMMON_CONTENT_TYPES = {
-			".js", 		"application/js",
+			".js", 		"application/javascript",
 			".json", 	"application/json",
 			".svg", 	"image/svg+xml",
 			".woff", 	"application/x-font-woff",
