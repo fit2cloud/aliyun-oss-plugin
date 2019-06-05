@@ -8,12 +8,32 @@
       <f:entry title="阿里云Secret Key" field="aliyunSecretKey" help="/plugin/aliyun-oss/help-aliyunSecretKey.html">
         <f:password/>
       </f:entry>
-      <f:entry title="阿里云EndPoint后缀" field="aliyunEndPointSuffix" help="/plugin/aliyun-oss/help-aliyunEndPoint.html">
-        <f:textbox default=".aliyuncs.com" />
+      <f:entry title="阿里云EndPoint" field="endpoint" help="/plugin/aliyun-oss/help-endpoint.html">
+        <f:textbox default="oss-cn-shanghai.aliyuncs.com" />
       </f:entry>
-		<f:validateButton
+      <f:entry title="HTTP头" help="/plugin/aliyun-oss/help-metadata.html">
+                <f:repeatable field="headers">
+                    <table width="100%">
+                        <f:entry field="postfix" title="后缀名">
+                            <f:textbox name="headerConfig.postfix" />
+                        </f:entry>
+                        <f:entry field="name" title="http头名称">
+                            <f:textbox name="headerConfig.name" />
+                        </f:entry>
+                        <f:entry field="value" title="http头值">
+                            <f:textbox name="headerConfig.value" />
+                        </f:entry>
+                        <f:entry>
+                            <div align="right">
+                                <f:repeatableDeleteButton />
+                            </div>
+                        </f:entry>
+                    </table>
+                </f:repeatable>
+              </f:entry>
+	  <f:validateButton
 			title="验证账户" progress="验证中..."
-			method="checkAccount" with="aliyunAccessKey,aliyunSecretKey,aliyunEndPointSuffix" />
+			method="checkAccount" with="aliyunAccessKey,aliyunSecretKey,endpoint" />
   </f:section>
   
 </j:jelly>

@@ -1,3 +1,4 @@
+<?jelly escape-by-default='true'?>
 <div>
  	阿里云-OSS插件可以在构建后将artifact上传到阿里云OSS。
 </div>

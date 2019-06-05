@@ -1,80 +1,69 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>aliyun-oss</artifactId>
-	<parent>
-		<groupId>org.jenkins-ci.plugins</groupId>
-		<artifactId>plugin</artifactId>
-		<version>1.593</version>
-	</parent>
-	<version>0.6</version>
-	<packaging>hpi</packaging>
-	<name>Aliyun OSS Plugin for Jenkins</name>
-	<description>Uploads build artifacts or downloads build dependencies using aliyun oss storage</description>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>aliyun-oss</artifactId>
+    <parent>
+        <groupId>org.jenkins-ci.plugins</groupId>
+        <artifactId>plugin</artifactId>
+        <version>3.5</version>
+        <relativePath/>
+    </parent>
+    <version>1.0</version>
+    <packaging>hpi</packaging>
+    <name>Aliyun OSS Plugin for Jenkins</name>
+    <description>Uploads build artifacts or downloads build dependencies using aliyun oss storage</description>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <jenkins.version>1.609.3</jenkins.version>
+        <java.level>8</java.level>
+    </properties>
 
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0 (the "License")</name>
-			<comments>Licensed under the Apache License, Version 2.0 (the "License").</comments>
-		</license>
-	</licenses>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0 (the "License")</name>
+            <comments>Licensed under the Apache License, Version 2.0 (the "License").</comments>
+        </license>
+    </licenses>
 
-	<developers>
-		<developer>
-			<id>zhimin</id>
-			<name>Zhimin Ruan</name>
-			<email>zhimin@fit2cloud.com</email>
-		</developer>
-	</developers>
+    <developers>
+        <developer>
+            <id>zhimin</id>
+            <name>Zhimin Ruan</name>
+            <email>zhimin@fit2cloud.com</email>
+        </developer>
+    </developers>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.aliyun.oss</groupId>
-			<artifactId>aliyun-sdk-oss</artifactId>
-			<version>2.0.2</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.3</version>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>2.8.3</version>
+        </dependency>
+    </dependencies>
 
-	<repositories>
-		<repository>
-			<id>repo.jenkins-ci.org</id>
-			<url>http://repo.jenkins-ci.org/public/</url>
-		</repository>
-	</repositories>
+    <repositories>
+        <repository>
+            <id>repo.jenkins-ci.org</id>
+            <url>https://repo.jenkins-ci.org/public/</url>
+        </repository>
+    </repositories>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>repo.jenkins-ci.org</id>
-			<url>http://repo.jenkins-ci.org/public/</url>
-		</pluginRepository>
-	</pluginRepositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repo.jenkins-ci.org</id>
+            <url>https://repo.jenkins-ci.org/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5</version>
-			</plugin>
-		</plugins>
-	</build>
-	
-	<distributionManagement>
-		<repository>
-			<id>fit2cloud-public</id>
-			<name>Fit2Cloud Public Release</name>
-			<url>http://repository.fit2cloud.com/content/repositories/fit2cloud-public/</url>
-		</repository>
-	</distributionManagement>
-	
+
+    <distributionManagement>
+        <repository>
+            <id>fit2cloud-public</id>
+            <name>Fit2Cloud Public Release</name>
+            <url>http://repository.fit2cloud.com/content/repositories/fit2cloud-public/</url>
+        </repository>
+    </distributionManagement>
+
 </project>
