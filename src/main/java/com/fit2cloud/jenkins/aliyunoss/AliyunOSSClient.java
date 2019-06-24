@@ -40,7 +40,7 @@ public class AliyunOSSClient {
 	}
 
 	public static int upload(AbstractBuild<?, ?> build, BuildListener listener,
-							 final String aliyunAccessKey, final String aliyunSecretKey, final String aliyunEndPointSuffix, String bucketName,String expFP,String expVP) throws AliyunOSSException {
+							 final String aliyunAccessKey, final String aliyunSecretKey, final String aliyunEndPointSuffix,String keepDir, String bucketName,String expFP,String expVP) throws AliyunOSSException {
 		OSSClient client = new OSSClient(aliyunAccessKey, aliyunSecretKey);
 		String location = client.getBucketLocation(bucketName);
 		String endpoint = "http://" + location + aliyunEndPointSuffix;
@@ -90,12 +90,19 @@ public class AliyunOSSClient {
 					paths = workspacePath.list(fileName);
 				}
 
+				// 表达式匹配出来的文件路径
 				if (paths.length != 0) {
 					for (FilePath src : paths) {
-						String key = "";
+						String key = src.getName();
+						if ("1".equals(keepDir)){
+							// 启用目录保持
+							String fullPath = src.absolutize().getRemote();
+							String dir = expFP.replace("**","");
+							key = fullPath.substring(fullPath.lastIndexOf(dir)+dir.length());
+						}
 						if (Utils.isNullOrEmpty(expVP)
 								&& Utils.isNullOrEmpty(embeddedVP)) {
-							key = src.getName();
+							// 不处理
 						} else {
 							String prefix = expVP;
 							if (!Utils.isNullOrEmpty(embeddedVP)) {
@@ -105,8 +112,14 @@ public class AliyunOSSClient {
 									prefix = expVP + embeddedVP;
 								}
 							}
-							key = prefix + src.getName();
+							key = prefix + key;
 						}
+
+						listener.getLogger().println("完整目录：" + src.absolutize());
+						listener.getLogger().println("key:"+key);
+						listener.getLogger().println("keepDir:"+keepDir);
+						listener.getLogger().println("path:"+src.getName());
+
 						long startTime = System.currentTimeMillis();
 						InputStream inputStream = src.read();
 						try {

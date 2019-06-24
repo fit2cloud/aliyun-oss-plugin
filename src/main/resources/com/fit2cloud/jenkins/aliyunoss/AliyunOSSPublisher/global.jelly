@@ -11,9 +11,12 @@
       <f:entry title="阿里云EndPoint后缀" field="aliyunEndPointSuffix" help="/plugin/aliyun-oss/help-aliyunEndPoint.html">
         <f:textbox default=".aliyuncs.com" />
       </f:entry>
+      <f:entry title="是否保留目录结构" field="keepDir" help="/plugin/aliyun-oss/help-keepDir.html">
+       <f:textbox/>
+      </f:entry>
 		<f:validateButton
 			title="验证账户" progress="验证中..."
-			method="checkAccount" with="aliyunAccessKey,aliyunSecretKey,aliyunEndPointSuffix" />
+			method="checkAccount" with="aliyunAccessKey,aliyunSecretKey,aliyunEndPointSuffix,keepDir" />
   </f:section>
   
 </j:jelly>
