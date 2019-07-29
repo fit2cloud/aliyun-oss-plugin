@@ -7,7 +7,7 @@
 		<artifactId>plugin</artifactId>
 		<version>1.593</version>
 	</parent>
-	<version>0.6</version>
+	<version>0.88</version>
 	<packaging>hpi</packaging>
 	<name>Aliyun OSS Plugin for Jenkins</name>
 	<description>Uploads build artifacts or downloads build dependencies using aliyun oss storage</description>

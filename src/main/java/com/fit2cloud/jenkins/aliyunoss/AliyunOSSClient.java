@@ -40,7 +40,7 @@ public class AliyunOSSClient {
 	}
 
 	public static int upload(AbstractBuild<?, ?> build, BuildListener listener,
-							 final String aliyunAccessKey, final String aliyunSecretKey, final String aliyunEndPointSuffix, String bucketName,String expFP,String expVP) throws AliyunOSSException {
+							 final String aliyunAccessKey, final String aliyunSecretKey, final String aliyunEndPointSuffix,String keepDir, String bucketName,String expFP,String expVP) throws AliyunOSSException {
 		OSSClient client = new OSSClient(aliyunAccessKey, aliyunSecretKey);
 		String location = client.getBucketLocation(bucketName);
 		String endpoint = "http://" + location + aliyunEndPointSuffix;
@@ -90,12 +90,19 @@ public class AliyunOSSClient {
 					paths = workspacePath.list(fileName);
 				}
 
+				// 表达式匹配出来的文件路径
 				if (paths.length != 0) {
 					for (FilePath src : paths) {
-						String key = "";
+						String key = src.getName();
+						if ("1".equals(keepDir)){
+							// 启用目录保持
+							String fullPath = src.absolutize().getRemote();
+							String dir = expFP.replace("**","");
+							key = fullPath.substring(fullPath.lastIndexOf(dir)+dir.length());
+						}
 						if (Utils.isNullOrEmpty(expVP)
 								&& Utils.isNullOrEmpty(embeddedVP)) {
-							key = src.getName();
+							// 不处理
 						} else {
 							String prefix = expVP;
 							if (!Utils.isNullOrEmpty(embeddedVP)) {
@@ -105,8 +112,14 @@ public class AliyunOSSClient {
 									prefix = expVP + embeddedVP;
 								}
 							}
-							key = prefix + src.getName();
+							key = prefix + key;
 						}
+
+						listener.getLogger().println("完整目录：" + src.absolutize());
+						listener.getLogger().println("key:"+key);
+						listener.getLogger().println("keepDir:"+keepDir);
+						listener.getLogger().println("path:"+src.getName());
+
 						long startTime = System.currentTimeMillis();
 						InputStream inputStream = src.read();
 						try {
@@ -145,12 +158,13 @@ public class AliyunOSSClient {
 	// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types
 	// support the common web file types for now
 	private static final String[] COMMON_CONTENT_TYPES = {
-			".js", 		"application/js",
+			".js", 		"application/javascript",
 			".json", 	"application/json",
 			".svg", 	"image/svg+xml",
 			".woff", 	"application/x-font-woff",
 			".woff2", 	"application/x-font-woff",
-			".ttf", 	"application/x-font-ttf"
+			".ttf", 	"application/x-font-ttf",
+			".css", 	"text/css"
 	};
 
 	// http://www.rgagnon.com/javadetails/java-0487.html
@@ -164,8 +178,7 @@ public class AliyunOSSClient {
 		if (type == null) {
 			for (int i = 0; i < COMMON_CONTENT_TYPES.length; i += 2) {
 				String extension = COMMON_CONTENT_TYPES[i];
-				int beginIndex = Math.max(0, fileName.length() - extension.length());
-				if (fileName.substring(beginIndex).equals(extension)) {
+				if (fileName.toLowerCase().endsWith(extension)) {
 					return COMMON_CONTENT_TYPES[i + 1];
 				}
 			}

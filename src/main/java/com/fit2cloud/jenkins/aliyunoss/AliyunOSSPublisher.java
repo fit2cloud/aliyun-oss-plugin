@@ -29,6 +29,7 @@ public class AliyunOSSPublisher extends Publisher {
 	String bucketName;
 	String filesPath;
 	String objectPrefix;
+	String keepDir;
 	
 	public String getBucketName() {
 		return bucketName;
@@ -46,7 +47,15 @@ public class AliyunOSSPublisher extends Publisher {
 		this.filesPath = filesPath;
 	}
 
-	public String getObjectPrefix() {
+    public String getKeepDir() {
+        return this.keepDir;
+    }
+
+    public void setKeepDir(String keepDir) {
+        this.keepDir = keepDir;
+    }
+
+    public String getObjectPrefix() {
 		return objectPrefix;
 	}
 
@@ -55,10 +64,11 @@ public class AliyunOSSPublisher extends Publisher {
 	}
 
 	@DataBoundConstructor
-	public AliyunOSSPublisher(final String bucketName, final String filesPath, final String objectPrefix) {
+	public AliyunOSSPublisher(final String bucketName, final String filesPath, final String objectPrefix,final String keepDir) {
 		this.bucketName = bucketName;
 		this.filesPath = filesPath;
 		this.objectPrefix = objectPrefix;
+		this.keepDir = keepDir;
 	}
 
 	public BuildStepMonitor getRequiredMonitorService() {
@@ -78,6 +88,7 @@ public class AliyunOSSPublisher extends Publisher {
 		private String aliyunAccessKey;
 		private String aliyunSecretKey;
 		private String aliyunEndPointSuffix;
+		private String keepDir;
 
 		public DescriptorImpl() {
 			super(AliyunOSSPublisher.class);
@@ -106,6 +117,7 @@ public class AliyunOSSPublisher extends Publisher {
 			this.aliyunAccessKey        = formData.getString("aliyunAccessKey");
 			this.aliyunSecretKey        = formData.getString("aliyunSecretKey");
 			this.aliyunEndPointSuffix   = formData.getString("aliyunEndPointSuffix");
+			this.keepDir = formData.getString("keepDir");
 			save();
 			return super.configure(req, formData);
 		}
@@ -113,7 +125,8 @@ public class AliyunOSSPublisher extends Publisher {
 		public FormValidation doCheckAccount(
 				@QueryParameter String aliyunAccessKey,
 				@QueryParameter String aliyunSecretKey,
-				@QueryParameter String aliyunEndPointSuffix) {
+				@QueryParameter String aliyunEndPointSuffix,
+				@QueryParameter String keepDir) {
 			if (Utils.isNullOrEmpty(aliyunAccessKey)) {
 				return FormValidation.error("阿里云AccessKey不能为空！");
 			}
@@ -122,6 +135,9 @@ public class AliyunOSSPublisher extends Publisher {
 			}
 			if (Utils.isNullOrEmpty(aliyunEndPointSuffix)) {
 				return FormValidation.error("阿里云EndPointSuffix不能为空！");
+			}
+			if (!("1".equals(keepDir)||"0".equals(keepDir))){
+				return FormValidation.error("1保留目录,0不保留");
 			}
 			try {
 				AliyunOSSClient.validateAliyunAccount(aliyunAccessKey,
@@ -176,7 +192,15 @@ public class AliyunOSSPublisher extends Publisher {
 		public void setAliyunEndPointSuffix(String aliyunEndPointSuffix) {
 			this.aliyunEndPointSuffix = aliyunEndPointSuffix;
 		}
-	}
+
+        public String getKeepDir() {
+            return this.keepDir;
+        }
+
+        public void setKeepDir(String keepDir) {
+            this.keepDir = keepDir;
+        }
+    }
 
 	@Override
 	public boolean perform(AbstractBuild build, Launcher launcher,BuildListener listener) 
@@ -210,6 +234,7 @@ public class AliyunOSSPublisher extends Publisher {
                     this.getDescriptor().aliyunAccessKey,
 					this.getDescriptor().aliyunSecretKey,
                     this.getDescriptor().aliyunEndPointSuffix,
+                    keepDir,
                     bucketName, expFP, expVP);
 			if (filesUploaded > 0) { 
 				listener.getLogger().println("上传Artifacts到阿里云OSS成功，上传文件个数:" + filesUploaded);

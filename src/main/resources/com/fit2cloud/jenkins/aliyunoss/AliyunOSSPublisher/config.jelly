@@ -9,4 +9,7 @@
   	<f:entry title="Object前缀" field="objectPrefix" help="/plugin/aliyun-oss/help-objectPrefix.html">
     	<f:textbox/>
  	</f:entry>
+ 	<f:entry title="是否保留目录结构" field="keepDir" help="/plugin/aliyun-oss/help-keepDir.html">
+        <f:textbox/>
+    </f:entry>
 </j:jelly>
