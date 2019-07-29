@@ -1,13 +1,4 @@
 <div>
-1. Bucket名称: 填写artifact要存放的bucket<br />
-2. 要上传的artifacts: 填写artifact文件，文件之间用;隔开。另外，支持要通配符描述，比如 text/*.zip指text目录下面的所有zip文件<br />
-3. Object前缀设置: 可以设置object key的前缀，支出使用Jenkins环境变量比如: "${JOB_NAME}/${BUILD_ID}/${BUILD_NUMBER}/"<br />
-
-假设一个job的名称是test，用户的设置如下<br />
-
-1. bucketName: f2c<br />
-2. 要上传的artifacts: hello.txt;hello1.txt<br />
-3. Object前缀: ${JOB_NAME}/${BUILD_ID}/${BUILD_NUMBER}<br />
-
-那么上传后的hello.txt url为: http://f2c.oss-cn-hangzhou.aliyuncs.com/test/2015-01-20_14-22-46/5/hello.txt<br />
+    要上传的文件<br/>
+    例如：<strong>build/*.js;build/*.css</strong> 匹配build目录下的 js 文件与 css 文件
 </div>

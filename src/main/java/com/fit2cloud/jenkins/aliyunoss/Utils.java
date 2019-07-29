@@ -1,16 +1,16 @@
 package com.fit2cloud.jenkins.aliyunoss;
 
+import hudson.Util;
+import hudson.model.AbstractBuild;
+import hudson.model.BuildListener;
+
 import java.io.IOException;
 import java.util.Map;
-
-import hudson.Util;
-import hudson.model.BuildListener;
-import hudson.model.AbstractBuild;
 
 
 public class Utils {
 	public static final String FWD_SLASH = "/";
-	
+
 	public static boolean isNullOrEmpty(final String name) {
 		boolean isValid = false;
 		if (name == null || name.matches("\\s*")) {
@@ -18,7 +18,7 @@ public class Utils {
 		}
 		return isValid;
 	}
-	
+
 	public static String replaceTokens(AbstractBuild<?, ?> build,
 			BuildListener listener, String text) throws IOException,
 			InterruptedException {
