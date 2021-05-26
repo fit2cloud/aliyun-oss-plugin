@@ -11,7 +11,7 @@ Jenkins是当前最常用的CI服务器，FIT2CLOUD Aliyun-OSS-Plugin for Jenkin
 一、安装说明
 -------------------------
 
-插件下载地址：http://repository.fit2cloud.com/service/local/repositories/fit2cloud-public/content/org/jenkins-ci/plugins/aliyun-oss/0.6/aliyun-oss-0.6.hpi
+插件下载地址：https://github.com/fit2cloud/aliyun-oss-plugin/releases/download/v0.6/aliyun-oss-plugin-v0.6.hpi
 在Jenkins中安装插件, 请到 Manage Jenkins | Advanced | Upload，上传插件(.hpi文件)
 安装完毕后请重新启动Jenkins
 
