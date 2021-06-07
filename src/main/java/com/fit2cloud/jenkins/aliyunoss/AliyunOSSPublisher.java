@@ -124,7 +124,7 @@ public class AliyunOSSPublisher extends Publisher {
 				return FormValidation.error("阿里云EndPointSuffix不能为空！");
 			}
 			try {
-				AliyunOSSClient.validateAliyunAccount(aliyunAccessKey,
+				AliyunOSSClient.validateAliyunAccount(aliyunEndPointSuffix,aliyunAccessKey,
 						aliyunSecretKey);
 			} catch (Exception e) {
 				return FormValidation.error(e.getMessage());
@@ -139,7 +139,7 @@ public class AliyunOSSPublisher extends Publisher {
 			}
 			try {
 				AliyunOSSClient.validateOSSBucket(aliyunAccessKey,
-						aliyunSecretKey, val);
+						aliyunSecretKey, aliyunEndPointSuffix,val);
 			} catch (Exception e) {
 				return FormValidation.error(e.getMessage());
 			}
@@ -215,7 +215,6 @@ public class AliyunOSSPublisher extends Publisher {
 				listener.getLogger().println("上传Artifacts到阿里云OSS成功，上传文件个数:" + filesUploaded);
 				success = true;
 			}
-
 		} catch (Exception e) {
 			this.logger.println("上传Artifact到阿里云OSS失败，错误消息如下:");
 			this.logger.println(e.getMessage());
